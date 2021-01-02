@@ -5,3 +5,7 @@ metadata:
 data:
   application-prod.properties: |
     logging.file.name=/app/logs/account.log
+    spring.datasource.driver-class-name=org.postgresql.Driver
+    spring.datasource.username=postgres
+    spring.datasource.password=myData1
+    spring.datasource.url=jdbc:postgresql://database.spring-cloud-kube.svc.cluster.local:5432/postgres

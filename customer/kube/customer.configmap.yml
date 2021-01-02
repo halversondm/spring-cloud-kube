@@ -6,3 +6,7 @@ data:
   application-prod.properties: |
     logging.file.name=/app/logs/customer.log
     account.url=http://account.spring-cloud-kube.svc.cluster.local
+    spring.datasource.driver-class-name=org.postgresql.Driver
+    spring.datasource.username=postgres
+    spring.datasource.password=myData1
+    spring.datasource.url=jdbc:postgresql://database.spring-cloud-kube.svc.cluster.local:5432/postgres

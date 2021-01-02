@@ -1,19 +1,24 @@
-package com.halversondm.cloud;
+package com.halversondm.cloud.data;
 
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
 
+@Entity
 public class Customer {
+    @Id
     private Integer id;
-    private String customerId;
+    private Integer customerId;
     private String name;
+    @Enumerated(EnumType.STRING)
     private CustomerType type;
-    private List<Account> accounts;
 
     public Customer() {
 
     }
 
-    public Customer(Integer id, String customerId, String name, CustomerType type) {
+    public Customer(Integer id, Integer customerId, String name, CustomerType type) {
         this.id = id;
         this.customerId = customerId;
         this.name = name;
@@ -28,11 +33,11 @@ public class Customer {
         this.id = id;
     }
 
-    public String getCustomerId() {
+    public Integer getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(Integer customerId) {
         this.customerId = customerId;
     }
 
@@ -50,13 +55,5 @@ public class Customer {
 
     public void setType(CustomerType type) {
         this.type = type;
-    }
-
-    public List<Account> getAccounts() {
-        return accounts;
-    }
-
-    public void setAccounts(List<Account> accounts) {
-        this.accounts = accounts;
     }
 }

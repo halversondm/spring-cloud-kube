@@ -1,19 +1,24 @@
-package com.halversondm.cloud;
+package com.halversondm.cloud.data;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity(name = "ACCOUNT")
 public class Account {
 
+    @Id
     private Integer id;
     private Integer customerId;
-    private String number;
+    private String amount;
 
     public Account() {
 
     }
 
-    public Account(Integer id, Integer customerId, String number) {
+    public Account(Integer id, Integer customerId, String amount) {
         this.id = id;
         this.customerId = customerId;
-        this.number = number;
+        this.amount = amount;
     }
 
     public Integer getId() {
@@ -32,11 +37,11 @@ public class Account {
         this.customerId = customerId;
     }
 
-    public String getNumber() {
-        return number;
+    public String getAmount() {
+        return amount;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setAmount(String number) {
+        this.amount = number;
     }
 }

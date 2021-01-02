@@ -1,4 +1,4 @@
-package com.halversondm.cloud;
+package com.halversondm.cloud.data;
 
 public enum CustomerType {
 
