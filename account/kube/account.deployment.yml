@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: account
+  name: account
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: account
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: account
+    spec:
+      containers:
+      - image: halversondm/spring-cloud-account:1.0.0
+        name: account
+        resources: {}
+        livenessProbe:
+          httpGet:
+            port: 8080
+            path: /actuator/health
+          initialDelaySeconds: 20
+        readinessProbe:
+          httpGet:
+            port: 8080
+            path: /actuator/health
+          initialDelaySeconds: 20
+        ports:
+          - containerPort: 8080
+        env:
+          - name: JAVA_OPTS
+            value: "-Dspring.profiles.active=prod -Dspring.config.locations=classpath:/application.properties,/app/config"
+        imagePullPolicy: Never
+        volumeMounts:
+          - name: config
+            mountPath: "/app/config"
+            readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: account

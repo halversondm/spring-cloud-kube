@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: gateway
+  name: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+      - image: halversondm/spring-cloud-gateway:1.0.0
+        name: gateway
+        resources: {}
+        livenessProbe:
+          httpGet:
+            port: 8080
+            path: /actuator/health
+          initialDelaySeconds: 20
+        readinessProbe:
+          httpGet:
+            port: 8080
+            path: /actuator/health
+          initialDelaySeconds: 20
+        ports:
+          - containerPort: 8080
+        env:
+          - name: JAVA_OPTS
+            value: "-Dspring.profiles.active=prod -Dspring.config.locations=classpath:/application.properties,/app/config"
+        imagePullPolicy: Never
+        volumeMounts:
+          - name: config
+            mountPath: "/app/config"
+            readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: gateway

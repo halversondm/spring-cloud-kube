@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: book
+data:
+  application-prod.properties: |
+    logging.file.name=/app/logs/book.log

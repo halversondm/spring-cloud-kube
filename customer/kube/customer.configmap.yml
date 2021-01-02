@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: customer
+data:
+  application-prod.properties: |
+    logging.file.name=/app/logs/customer.log
+    account.url=http://account.spring-cloud-kube.svc.cluster.local
