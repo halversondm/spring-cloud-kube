@@ -1,0 +1,26 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+    - name: Setup Java JDK
+      uses: actions/setup-java@v2.3.1
+      with:
+        # The Java version to set up. Takes a whole or semver Java version. See examples of supported syntax in README file
+        java-version: '11'
+        # Java distribution. See the list of supported distributions in README file
+        distribution: 'adopt'
+    - name: Build Code
+      run: mvn -B clean install
