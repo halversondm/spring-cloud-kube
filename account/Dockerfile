@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-alpine
+FROM openjdk:17-alpine
 ARG JAR_FILE
 ARG JAVA_OPTS
 RUN mkdir -p /app/logs
