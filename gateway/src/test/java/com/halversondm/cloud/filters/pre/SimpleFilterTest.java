@@ -1,50 +1,37 @@
 package com.halversondm.cloud.filters.pre;
 
-import com.netflix.zuul.context.RequestContext;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
+import org.springframework.mock.web.server.MockServerWebExchange;
+import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class SimpleFilterTest {
 
-    private SimpleFilter filter;
+    private final SimpleFilter filter = new SimpleFilter();
 
-    @BeforeEach
-    void setUp() {
-        filter = new SimpleFilter();
-        RequestContext.testSetCurrentContext(new RequestContext());
-    }
-
-    @AfterEach
-    void tearDown() {
-        RequestContext.testSetCurrentContext(null);
+    @Test
+    void getOrder_returnsOne() {
+        assertThat(filter.getOrder()).isEqualTo(1);
     }
 
     @Test
-    void filterType_returnsPre() {
-        assertThat(filter.filterType()).isEqualTo("pre");
-    }
+    void filter_callsChainAndCompletesSuccessfully() {
+        MockServerHttpRequest request = MockServerHttpRequest
+                .get("http://localhost/some/path")
+                .build();
+        MockServerWebExchange exchange = MockServerWebExchange.from(request);
 
-    @Test
-    void filterOrder_returnsOne() {
-        assertThat(filter.filterOrder()).isEqualTo(1);
-    }
+        GatewayFilterChain chain = mock(GatewayFilterChain.class);
+        when(chain.filter(exchange)).thenReturn(Mono.empty());
 
-    @Test
-    void shouldFilter_returnsTrue() {
-        assertThat(filter.shouldFilter()).isTrue();
-    }
+        Mono<Void> result = filter.filter(exchange, chain);
 
-    @Test
-    void run_returnsNull() {
-        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/some/path");
-        RequestContext.getCurrentContext().setRequest(request);
-
-        Object result = filter.run();
-
-        assertThat(result).isNull();
+        assertThat(result).isNotNull();
+        result.block();
     }
 }

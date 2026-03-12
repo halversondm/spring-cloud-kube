@@ -1,7 +1,7 @@
 package com.halversondm.cloud.data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 @Entity(name = "ACCOUNT")
 public class Account {

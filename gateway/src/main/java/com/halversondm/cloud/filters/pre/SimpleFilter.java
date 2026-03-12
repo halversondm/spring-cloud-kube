@@ -1,36 +1,29 @@
 package com.halversondm.cloud.filters.pre;
 
-import com.netflix.zuul.ZuulFilter;
-import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.core.Ordered;
+import org.springframework.stereotype.Component;
+import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
 
-import javax.servlet.http.HttpServletRequest;
-
-public class SimpleFilter extends ZuulFilter {
+@Component
+public class SimpleFilter implements GlobalFilter, Ordered {
 
     private static final Logger log = LoggerFactory.getLogger(SimpleFilter.class);
 
     @Override
-    public String filterType() {
-        return "pre";
+    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        log.info("{} request to {}",
+                exchange.getRequest().getMethod(),
+                exchange.getRequest().getURI());
+        return chain.filter(exchange);
     }
 
     @Override
-    public int filterOrder() {
+    public int getOrder() {
         return 1;
-    }
-
-    @Override
-    public boolean shouldFilter() {
-        return true;
-    }
-
-    @Override
-    public Object run() {
-        RequestContext ctx = RequestContext.getCurrentContext();
-        HttpServletRequest request = ctx.getRequest();
-        log.info("{} request to {}", request.getMethod(), request.getRequestURL());
-        return null;
     }
 }
