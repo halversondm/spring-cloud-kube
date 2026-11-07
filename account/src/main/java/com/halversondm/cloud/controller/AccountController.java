@@ -5,7 +5,6 @@ import com.halversondm.cloud.data.Account;
 import com.halversondm.cloud.data.AccountData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,18 +16,19 @@ import java.util.Optional;
 @RestController
 public class AccountController {
 
-    @Autowired
-    AccountData accountData;
-
     private static final Logger logger = LoggerFactory.getLogger(AccountApplication.class);
 
-    public AccountController() {
+    private final AccountData accountData;
+
+    public AccountController(AccountData accountData) {
+        this.accountData = accountData;
     }
 
     @RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.GET, produces = "application/json")
     public Account findByAccountId(@PathVariable("accountId") String accountId) {
-        logger.info(String.format("Account.findByAccountId(%s)", accountId));
-        Optional<Account> account = accountData.findById(Integer.valueOf(accountId));
+        Integer id = Integer.valueOf(accountId);
+        logger.info("Account.findByAccountId({})", id);
+        Optional<Account> account = accountData.findById(id);
         return account.orElse(null);
     }
 

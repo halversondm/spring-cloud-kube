@@ -6,7 +6,6 @@ import com.halversondm.cloud.data.CustomerData;
 import com.halversondm.cloud.dto.CustomerAccount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,13 +19,13 @@ public class CustomerController {
 
     private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
-    @Autowired
-    private CustomerData customerData;
+    private final CustomerData customerData;
 
-    @Autowired
-    private AccountClient accountClient;
+    private final AccountClient accountClient;
 
-    public CustomerController() {
+    public CustomerController(CustomerData customerData, AccountClient accountClient) {
+        this.customerData = customerData;
+        this.accountClient = accountClient;
     }
 
     @RequestMapping(value = "/customers/{customerId}", method = RequestMethod.GET, produces = "application/json")
